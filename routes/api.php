@@ -2,8 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,15 +22,22 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/user', [UserController::class, 'index']);
-Route::post('/user', [UserController::class, 'store']);
-Route::get('/user/{id}', [UserController::class, 'show']);
-Route::put('/user/{id}', [UserController::class, 'update']);
-Route::delete('/user/{id}', [UserController::class, 'destroy']);
+//user
+Route::post('/register',[UserController::class,'register']);
+Route::post('/login',[UserController::class,'login']);
 
-//public routes Post
-Route::get('/post', [PostController::class, 'index']);
-Route::post('/post', [PostController::class, 'store']);
-Route::get('/post/{id}', [PostController::class, 'show']);
-Route::put('/post/{id}', [PostController::class, 'update']);
-Route::delete('/post/{id}', [PostController::class, 'destroy']);
+//Post
+Route::get('/posts',[PostController::class,'index']);
+Route::get('/posts/{id}',[PostController::class,'show']);
+
+
+Route::group(['middleware'=>['auth:sanctum']],function(){
+    //Post
+    Route::post('/posts',[PostController::class,'store']);
+    Route::put('/posts/{id}',[PostController::class,'update']);
+    Route::delete('/posts/{id}',[PostController::class,'destroy']);
+
+    //User
+    Route::post('/logout',[UserController::class,'logout']);
+    
+});

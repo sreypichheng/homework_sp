@@ -15,7 +15,7 @@ class PostController extends Controller
     public function index()
     {
         //
-        return Post::with('user')->latest()->get();
+        return Post::with('user')->get();
     }
 
     /**
@@ -28,12 +28,14 @@ class PostController extends Controller
     {
         //
         $post = new Post();
-        $post ->user_id = $request -> user_id;
-        $post -> title = $request -> title;
-        $post ->body = $request -> body;
-        $post->save();
+        $post-> title = $request-> title;
+        $post->body = $request->body;
+        $post->user_id = $request-> user_id;
+        $post-> save();
+
+        return response()-> json('Post created');
+
         
-        return response()->json('created');
     }
 
     /**
@@ -45,7 +47,7 @@ class PostController extends Controller
     public function show($id)
     {
         //
-        return Post::with('user')->findOrFail($id);
+        return Post::findOrFail($id);
     }
 
     /**
@@ -59,13 +61,12 @@ class PostController extends Controller
     {
         //
         $post = Post::findOrFail($id);
-        $post ->user_id = $request -> user_id;
-        $post -> title = $request -> title;
-        $post ->body = $request -> body;
-        $post->save();
+        $post-> title = $request-> title;
+        $post->body = $request->body;
+        $post->user_id = $request-> user_id;
+        $post-> save();
 
-        return response()->json('Updated');
-    
+        return response()-> json('Post Updated');
     }
 
     /**
@@ -77,6 +78,6 @@ class PostController extends Controller
     public function destroy($id)
     {
         //
-        Post::destroy($id);
+        return Post::destroy($id);
     }
 }
